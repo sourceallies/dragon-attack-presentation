@@ -1,4 +1,7 @@
 using Backend;
+using Orleans;
+using Orleans.Hosting;
+using Orleans.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,12 @@ builder.Services
     .AddDocumentFromFile("schema.graphql")
     .BindRuntimeType<Query>()
     .BindRuntimeType<Mutation>();
+
+builder.Host.UseOrleans(siloBuilder =>
+{
+    siloBuilder.UseLocalhostClustering();
+    siloBuilder.AddMemoryGrainStorageAsDefault();
+});
 
 var app = builder.Build();
 

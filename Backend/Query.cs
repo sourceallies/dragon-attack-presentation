@@ -1,7 +1,13 @@
+using Orleans;
+
 namespace Backend
 {
     public class Query
     {
-        public int Counter {get; set; } = 100;
+        public Task<int> Counter([Service] IClusterClient clusterClient)
+        {
+            var grain = clusterClient.GetGrain<ICounterGrain>(Guid.Empty);
+            return grain.GetValue();
+        }
     }
 }

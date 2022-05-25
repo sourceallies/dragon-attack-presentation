@@ -1,10 +1,13 @@
+using Orleans;
+
 namespace Backend
 {
     public class Mutation
     {
-        public int Decrement([Service] Query query)
+        public Task<int> Decrement([Service] IClusterClient clusterClient)
         {
-            return --query.Counter;
+            var grain = clusterClient.GetGrain<ICounterGrain>(Guid.Empty);
+            return grain.Decrement();
         }
     }
 }
