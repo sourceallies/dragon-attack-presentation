@@ -2,7 +2,7 @@ import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
-import { useDecrementCounterMutation } from './generated/graphql';
+import { useDecrementCounterMutation, useWatchCounterSubscription } from './generated/graphql';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
@@ -16,10 +16,12 @@ const apolloClient = new ApolloClient({
 });
 
 function DecrementButton() {
-  const [decrementCounter, {data}] = useDecrementCounterMutation();
+  const [decrementCounter] = useDecrementCounterMutation();
+  const {data} = useWatchCounterSubscription();
+
   return (
     <button onClick={() => decrementCounter()}>
-      Decrement: {data?.decrement}
+      Decrement: {data?.watchCounter?.newValue}
     </button>
   )
 }

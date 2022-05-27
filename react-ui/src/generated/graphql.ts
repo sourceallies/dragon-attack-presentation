@@ -16,6 +16,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type CounterEvent = {
+  __typename?: 'CounterEvent';
+  newValue: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   decrement: Scalars['Int'];
@@ -26,10 +31,20 @@ export type Query = {
   counter: Scalars['Int'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  watchCounter: CounterEvent;
+};
+
 export type DecrementCounterMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type DecrementCounterMutation = { __typename?: 'Mutation', decrement: number };
+
+export type WatchCounterSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WatchCounterSubscription = { __typename?: 'Subscription', watchCounter: { __typename?: 'CounterEvent', newValue: number } };
 
 
 export const DecrementCounterDocument = gql`
@@ -62,9 +77,45 @@ export function useDecrementCounterMutation(baseOptions?: Apollo.MutationHookOpt
 export type DecrementCounterMutationHookResult = ReturnType<typeof useDecrementCounterMutation>;
 export type DecrementCounterMutationResult = Apollo.MutationResult<DecrementCounterMutation>;
 export type DecrementCounterMutationOptions = Apollo.BaseMutationOptions<DecrementCounterMutation, DecrementCounterMutationVariables>;
+export const WatchCounterDocument = gql`
+    subscription WatchCounter {
+  watchCounter {
+    newValue
+  }
+}
+    `;
+
+/**
+ * __useWatchCounterSubscription__
+ *
+ * To run a query within a React component, call `useWatchCounterSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useWatchCounterSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWatchCounterSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useWatchCounterSubscription(baseOptions?: Apollo.SubscriptionHookOptions<WatchCounterSubscription, WatchCounterSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<WatchCounterSubscription, WatchCounterSubscriptionVariables>(WatchCounterDocument, options);
+      }
+export type WatchCounterSubscriptionHookResult = ReturnType<typeof useWatchCounterSubscription>;
+export type WatchCounterSubscriptionResult = Apollo.SubscriptionResult<WatchCounterSubscription>;
 
 export const DecrementCounter = gql`
     mutation DecrementCounter {
   decrement
+}
+    `;
+export const WatchCounter = gql`
+    subscription WatchCounter {
+  watchCounter {
+    newValue
+  }
 }
     `;
