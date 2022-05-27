@@ -3,10 +3,15 @@ import logo from './logo.svg'
 import './App.css'
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
 import { useDecrementCounterMutation } from './generated/graphql';
+import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { WebSocketLink } from '@apollo/client/link/ws';
 
+const subscriptionClient = new SubscriptionClient('ws://localhost:5000/graphql', {
+  reconnect: true
+});
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'http://localhost:5000/graphql'
+  link: new WebSocketLink(subscriptionClient)
 });
 
 function DecrementButton() {
