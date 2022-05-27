@@ -23,7 +23,7 @@ builder.Host.UseOrleans(siloBuilder =>
 });
 
 var app = builder.Build();
-
+app.UseWebSockets();
 app.MapGraphQL();
 app.UseCors(builder =>
 {
