@@ -8,18 +8,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddCors()
     .AddSingleton<Query>()
-    .AddSingleton<Mutation>();
+    .AddSingleton<Mutation>()
+    .AddSingleton<Subscription>();
 
 builder.Services
     .AddGraphQLServer()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
     .AddDocumentFromFile("schema.graphql")
     .BindRuntimeType<Query>()
-    .BindRuntimeType<Mutation>();
+    .BindRuntimeType<Mutation>()
+    .BindRuntimeType<Subscription>();
 
 builder.Host.UseOrleans(siloBuilder =>
 {
     siloBuilder.UseLocalhostClustering();
     siloBuilder.AddMemoryGrainStorageAsDefault();
+    siloBuilder.AddMemoryGrainStorage("PubSubStore");
+    siloBuilder.AddSimpleMessageStreamProvider("default");
 });
 
 var app = builder.Build();

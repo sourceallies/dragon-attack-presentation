@@ -5,3 +5,11 @@ type Query {
 type Mutation {
     decrement: Int!
 }
+
+# type CounterEvent {
+#     newValue: Int!
+# }
+
+type Subscription {
+    watchCounter: int!
+}
