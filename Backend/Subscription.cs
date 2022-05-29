@@ -9,6 +9,7 @@ namespace Backend
     public class Subscription
     {
         [SubscribeAndResolve]
+        [GraphQLType("CounterEvent!")]
         public ValueTask<ISourceStream<CounterEvent>> WatchCounter([Service] IClusterClient clusterClient)
         {
             var stream = clusterClient.GetStreamProvider("default")
@@ -23,7 +24,7 @@ namespace Backend
         private readonly Channel<T> channel;
         private readonly IAsyncStream<T> stream;
         private InMemorySourceStream<T> channelWrapper;
-        private StreamSubscriptionHandle<T> subscriptionHandle;
+        private StreamSubscriptionHandle<T>? subscriptionHandle;
 
         public OrleansStreamSourceStream(IAsyncStream<T> stream)
         {

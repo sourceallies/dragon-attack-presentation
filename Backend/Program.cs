@@ -13,6 +13,7 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
+    .InitializeOnStartup()
     .AddDocumentFromFile("schema.graphql")
     .BindRuntimeType<Query>()
     .BindRuntimeType<Mutation>()

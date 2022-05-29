@@ -6,9 +6,9 @@ type Mutation {
     decrement: Int!
 }
 
-# type CounterEvent {
-#     newValue: Int!
-# }
+type CounterEvent {
+    newValue: Int!
+}
 
 type Subscription {
     watchCounter: CounterEvent!
