@@ -4,9 +4,9 @@ namespace Backend
 {
     public class Query
     {
-        public Task<int> Counter([Service] IClusterClient clusterClient)
+        public Task<GameCharacter> GameCharacter([Service] IClusterClient clusterClient)
         {
-            var grain = clusterClient.GetGrain<ICounterGrain>(Guid.Empty);
+            var grain = clusterClient.GetGrain<IGameCharacterGrain>(Guid.Empty);
             return grain.GetValue();
         }
     }

@@ -4,10 +4,10 @@ namespace Backend
 {
     public class Mutation
     {
-        public Task<int> Decrement([Service] IClusterClient clusterClient)
+        public Task<int> Attack([Service] IClusterClient clusterClient)
         {
-            var grain = clusterClient.GetGrain<ICounterGrain>(Guid.Empty);
-            return grain.Decrement();
+            var grain = clusterClient.GetGrain<IGameCharacterGrain>(Guid.Empty);
+            return grain.TakeDamage(1);
         }
     }
 }

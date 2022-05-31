@@ -9,12 +9,12 @@ namespace Backend
     public class Subscription
     {
         [SubscribeAndResolve]
-        [GraphQLType("CounterEvent!")]
-        public ValueTask<ISourceStream<CounterEvent>> WatchCounter([Service] IClusterClient clusterClient)
+        [GraphQLType("HealthChangeEvent!")]
+        public ValueTask<ISourceStream<HealthChangeEvent>> WatchCharacter([Service] IClusterClient clusterClient)
         {
             var stream = clusterClient.GetStreamProvider("default")
-                .GetStream<CounterEvent>(Guid.Empty, nameof(ICounterGrain));
-            ISourceStream<CounterEvent> sourceStream = new OrleansStreamSourceStream<CounterEvent>(stream);
+                .GetStream<HealthChangeEvent>(Guid.Empty, nameof(IGameCharacterGrain));
+            ISourceStream<HealthChangeEvent> sourceStream = new OrleansStreamSourceStream<HealthChangeEvent>(stream);
             return ValueTask.FromResult(sourceStream);
         }
     }

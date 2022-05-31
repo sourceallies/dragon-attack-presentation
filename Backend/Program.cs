@@ -18,7 +18,8 @@ builder.Services
     .BindRuntimeType<Query>()
     .BindRuntimeType<Mutation>()
     .BindRuntimeType<Subscription>()
-    .BindRuntimeType<CounterEvent>();
+    .BindRuntimeType<HealthChangeEvent>()
+    .BindRuntimeType<GameCharacter>();
 
 builder.Host.UseOrleans(siloBuilder =>
 {
