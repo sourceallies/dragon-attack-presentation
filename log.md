@@ -32,3 +32,7 @@ Subscription.cs
 .BindRuntimeType<GameCharacter>();
 ```
 
+DecrementCounter.graphql -> Attack
+WatchCounter -> WatchCharacter
+DecrementButton -> AttackButton
+Imports

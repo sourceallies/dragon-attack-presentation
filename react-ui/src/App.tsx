@@ -1,8 +1,6 @@
-import { useState } from 'react'
-import logo from './logo.svg'
 import './App.css'
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
-import { useDecrementCounterMutation, useWatchCounterSubscription } from './generated/graphql';
+import { useAttackMutation, useWatchCharacterSubscription } from './generated/graphql';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
@@ -15,13 +13,13 @@ const apolloClient = new ApolloClient({
   link: new WebSocketLink(websocketClient)
 });
 
-function DecrementButton() {
-  const [decrementCounter] = useDecrementCounterMutation();
-  const {data} = useWatchCounterSubscription();
+function AttackButton() {
+  const [doAttack] = useAttackMutation();
+  const {data} = useWatchCharacterSubscription();
 
   return (
-    <button onClick={() => decrementCounter()}>
-      Decrement: {data?.watchCounter?.newValue}
+    <button onClick={() => doAttack()}>
+      Attack {data?.watchCharacter?.newHealth}hp
     </button>
   )
 }
@@ -30,7 +28,7 @@ function App() {
   return (
     <div className="App">
       <ApolloProvider client={apolloClient}>
-        <DecrementButton />
+        <AttackButton />
       </ApolloProvider>
     </div>
   )

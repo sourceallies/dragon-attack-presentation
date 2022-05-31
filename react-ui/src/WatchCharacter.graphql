@@ -1,0 +1,5 @@
+subscription WatchCharacter {
+    watchCharacter {
+        newHealth
+    }
+}
