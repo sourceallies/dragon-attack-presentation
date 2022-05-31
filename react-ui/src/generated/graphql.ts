@@ -31,9 +31,19 @@ export type Mutation = {
   attack: Scalars['Int'];
 };
 
+
+export type MutationAttackArgs = {
+  targetId: Scalars['ID'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  gameCharacter: Scalars['Int'];
+  gameCharacter: GameCharacter;
+};
+
+
+export type QueryGameCharacterArgs = {
+  id: Scalars['ID'];
 };
 
 export type Subscription = {
@@ -41,20 +51,29 @@ export type Subscription = {
   watchCharacter: HealthChangeEvent;
 };
 
-export type AttackMutationVariables = Exact<{ [key: string]: never; }>;
+
+export type SubscriptionWatchCharacterArgs = {
+  targetId: Scalars['ID'];
+};
+
+export type AttackMutationVariables = Exact<{
+  targetId: Scalars['ID'];
+}>;
 
 
 export type AttackMutation = { __typename?: 'Mutation', attack: number };
 
-export type WatchCharacterSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type WatchCharacterSubscriptionVariables = Exact<{
+  targetId: Scalars['ID'];
+}>;
 
 
 export type WatchCharacterSubscription = { __typename?: 'Subscription', watchCharacter: { __typename?: 'HealthChangeEvent', newHealth: number } };
 
 
 export const AttackDocument = gql`
-    mutation Attack {
-  attack
+    mutation Attack($targetId: ID!) {
+  attack(targetId: $targetId)
 }
     `;
 export type AttackMutationFn = Apollo.MutationFunction<AttackMutation, AttackMutationVariables>;
@@ -72,6 +91,7 @@ export type AttackMutationFn = Apollo.MutationFunction<AttackMutation, AttackMut
  * @example
  * const [attackMutation, { data, loading, error }] = useAttackMutation({
  *   variables: {
+ *      targetId: // value for 'targetId'
  *   },
  * });
  */
@@ -83,8 +103,8 @@ export type AttackMutationHookResult = ReturnType<typeof useAttackMutation>;
 export type AttackMutationResult = Apollo.MutationResult<AttackMutation>;
 export type AttackMutationOptions = Apollo.BaseMutationOptions<AttackMutation, AttackMutationVariables>;
 export const WatchCharacterDocument = gql`
-    subscription WatchCharacter {
-  watchCharacter {
+    subscription WatchCharacter($targetId: ID!) {
+  watchCharacter(targetId: $targetId) {
     newHealth
   }
 }
@@ -102,10 +122,11 @@ export const WatchCharacterDocument = gql`
  * @example
  * const { data, loading, error } = useWatchCharacterSubscription({
  *   variables: {
+ *      targetId: // value for 'targetId'
  *   },
  * });
  */
-export function useWatchCharacterSubscription(baseOptions?: Apollo.SubscriptionHookOptions<WatchCharacterSubscription, WatchCharacterSubscriptionVariables>) {
+export function useWatchCharacterSubscription(baseOptions: Apollo.SubscriptionHookOptions<WatchCharacterSubscription, WatchCharacterSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useSubscription<WatchCharacterSubscription, WatchCharacterSubscriptionVariables>(WatchCharacterDocument, options);
       }
@@ -113,13 +134,13 @@ export type WatchCharacterSubscriptionHookResult = ReturnType<typeof useWatchCha
 export type WatchCharacterSubscriptionResult = Apollo.SubscriptionResult<WatchCharacterSubscription>;
 
 export const Attack = gql`
-    mutation Attack {
-  attack
+    mutation Attack($targetId: ID!) {
+  attack(targetId: $targetId)
 }
     `;
 export const WatchCharacter = gql`
-    subscription WatchCharacter {
-  watchCharacter {
+    subscription WatchCharacter($targetId: ID!) {
+  watchCharacter(targetId: $targetId) {
     newHealth
   }
 }

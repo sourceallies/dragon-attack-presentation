@@ -13,9 +13,21 @@ const apolloClient = new ApolloClient({
   link: new WebSocketLink(websocketClient)
 });
 
-function AttackButton() {
-  const [doAttack] = useAttackMutation();
-  const {data} = useWatchCharacterSubscription();
+interface AttackButtonProps {
+  targetId: string;
+}
+
+function AttackButton({targetId}: AttackButtonProps) {
+  const [doAttack] = useAttackMutation({
+    variables: {
+      targetId
+    }
+  });
+  const {data} = useWatchCharacterSubscription({
+    variables: {
+      targetId
+    }
+  });
 
   return (
     <button onClick={() => doAttack()}>
@@ -28,7 +40,7 @@ function App() {
   return (
     <div className="App">
       <ApolloProvider client={apolloClient}>
-        <AttackButton />
+        <AttackButton targetId='00000000-0000-0000-0000-000000000000'/>
       </ApolloProvider>
     </div>
   )

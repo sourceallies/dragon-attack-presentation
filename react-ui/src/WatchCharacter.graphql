@@ -1,5 +1,5 @@
-subscription WatchCharacter {
-    watchCharacter {
+subscription WatchCharacter($targetId: ID!) {
+    watchCharacter(targetId: $targetId) {
         newHealth
     }
 }

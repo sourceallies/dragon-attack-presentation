@@ -10,10 +10,10 @@ namespace Backend
     {
         [SubscribeAndResolve]
         [GraphQLType("HealthChangeEvent!")]
-        public ValueTask<ISourceStream<HealthChangeEvent>> WatchCharacter([Service] IClusterClient clusterClient)
+        public ValueTask<ISourceStream<HealthChangeEvent>> WatchCharacter([Service] IClusterClient clusterClient, Guid targetId)
         {
             var stream = clusterClient.GetStreamProvider("default")
-                .GetStream<HealthChangeEvent>(Guid.Empty, nameof(IGameCharacterGrain));
+                .GetStream<HealthChangeEvent>(targetId, nameof(IGameCharacterGrain));
             ISourceStream<HealthChangeEvent> sourceStream = new OrleansStreamSourceStream<HealthChangeEvent>(stream);
             return ValueTask.FromResult(sourceStream);
         }
