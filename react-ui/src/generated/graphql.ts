@@ -16,106 +16,132 @@ export type Scalars = {
   Float: number;
 };
 
-export type CounterEvent = {
-  __typename?: 'CounterEvent';
-  newValue: Scalars['Int'];
+export type GameCharacter = {
+  __typename?: 'GameCharacter';
+  currentHealth: Scalars['Int'];
+};
+
+export type HealthChangedEvent = {
+  __typename?: 'HealthChangedEvent';
+  resultingHealth: Scalars['Int'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  decrement: Scalars['Int'];
+  attack: Scalars['Int'];
+};
+
+
+export type MutationAttackArgs = {
+  targetId: Scalars['ID'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  counter: Scalars['Int'];
+  gameCharacter: GameCharacter;
+};
+
+
+export type QueryGameCharacterArgs = {
+  id: Scalars['ID'];
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
-  watchCounter: CounterEvent;
+  watchCharacter: HealthChangedEvent;
 };
 
-export type DecrementCounterMutationVariables = Exact<{ [key: string]: never; }>;
+
+export type SubscriptionWatchCharacterArgs = {
+  id: Scalars['ID'];
+};
+
+export type AttackMutationVariables = Exact<{
+  targetId: Scalars['ID'];
+}>;
 
 
-export type DecrementCounterMutation = { __typename?: 'Mutation', decrement: number };
+export type AttackMutation = { __typename?: 'Mutation', attack: number };
 
-export type WatchCounterSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type WatchCharacterSubscriptionVariables = Exact<{
+  id: Scalars['ID'];
+}>;
 
 
-export type WatchCounterSubscription = { __typename?: 'Subscription', watchCounter: { __typename?: 'CounterEvent', newValue: number } };
+export type WatchCharacterSubscription = { __typename?: 'Subscription', watchCharacter: { __typename?: 'HealthChangedEvent', resultingHealth: number } };
 
 
-export const DecrementCounterDocument = gql`
-    mutation DecrementCounter {
-  decrement
+export const AttackDocument = gql`
+    mutation Attack($targetId: ID!) {
+  attack(targetId: $targetId)
 }
     `;
-export type DecrementCounterMutationFn = Apollo.MutationFunction<DecrementCounterMutation, DecrementCounterMutationVariables>;
+export type AttackMutationFn = Apollo.MutationFunction<AttackMutation, AttackMutationVariables>;
 
 /**
- * __useDecrementCounterMutation__
+ * __useAttackMutation__
  *
- * To run a mutation, you first call `useDecrementCounterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDecrementCounterMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAttackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAttackMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [decrementCounterMutation, { data, loading, error }] = useDecrementCounterMutation({
+ * const [attackMutation, { data, loading, error }] = useAttackMutation({
  *   variables: {
+ *      targetId: // value for 'targetId'
  *   },
  * });
  */
-export function useDecrementCounterMutation(baseOptions?: Apollo.MutationHookOptions<DecrementCounterMutation, DecrementCounterMutationVariables>) {
+export function useAttackMutation(baseOptions?: Apollo.MutationHookOptions<AttackMutation, AttackMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DecrementCounterMutation, DecrementCounterMutationVariables>(DecrementCounterDocument, options);
+        return Apollo.useMutation<AttackMutation, AttackMutationVariables>(AttackDocument, options);
       }
-export type DecrementCounterMutationHookResult = ReturnType<typeof useDecrementCounterMutation>;
-export type DecrementCounterMutationResult = Apollo.MutationResult<DecrementCounterMutation>;
-export type DecrementCounterMutationOptions = Apollo.BaseMutationOptions<DecrementCounterMutation, DecrementCounterMutationVariables>;
-export const WatchCounterDocument = gql`
-    subscription WatchCounter {
-  watchCounter {
-    newValue
+export type AttackMutationHookResult = ReturnType<typeof useAttackMutation>;
+export type AttackMutationResult = Apollo.MutationResult<AttackMutation>;
+export type AttackMutationOptions = Apollo.BaseMutationOptions<AttackMutation, AttackMutationVariables>;
+export const WatchCharacterDocument = gql`
+    subscription WatchCharacter($id: ID!) {
+  watchCharacter(id: $id) {
+    resultingHealth
   }
 }
     `;
 
 /**
- * __useWatchCounterSubscription__
+ * __useWatchCharacterSubscription__
  *
- * To run a query within a React component, call `useWatchCounterSubscription` and pass it any options that fit your needs.
- * When your component renders, `useWatchCounterSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useWatchCharacterSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useWatchCharacterSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useWatchCounterSubscription({
+ * const { data, loading, error } = useWatchCharacterSubscription({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useWatchCounterSubscription(baseOptions?: Apollo.SubscriptionHookOptions<WatchCounterSubscription, WatchCounterSubscriptionVariables>) {
+export function useWatchCharacterSubscription(baseOptions: Apollo.SubscriptionHookOptions<WatchCharacterSubscription, WatchCharacterSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<WatchCounterSubscription, WatchCounterSubscriptionVariables>(WatchCounterDocument, options);
+        return Apollo.useSubscription<WatchCharacterSubscription, WatchCharacterSubscriptionVariables>(WatchCharacterDocument, options);
       }
-export type WatchCounterSubscriptionHookResult = ReturnType<typeof useWatchCounterSubscription>;
-export type WatchCounterSubscriptionResult = Apollo.SubscriptionResult<WatchCounterSubscription>;
+export type WatchCharacterSubscriptionHookResult = ReturnType<typeof useWatchCharacterSubscription>;
+export type WatchCharacterSubscriptionResult = Apollo.SubscriptionResult<WatchCharacterSubscription>;
 
-export const DecrementCounter = gql`
-    mutation DecrementCounter {
-  decrement
+export const Attack = gql`
+    mutation Attack($targetId: ID!) {
+  attack(targetId: $targetId)
 }
     `;
-export const WatchCounter = gql`
-    subscription WatchCounter {
-  watchCounter {
-    newValue
+export const WatchCharacter = gql`
+    subscription WatchCharacter($id: ID!) {
+  watchCharacter(id: $id) {
+    resultingHealth
   }
 }
     `;

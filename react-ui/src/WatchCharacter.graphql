@@ -1,0 +1,5 @@
+subscription WatchCharacter($id: ID!) {
+    watchCharacter(id: $id) {
+        resultingHealth
+    }
+}

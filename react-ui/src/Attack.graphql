@@ -1,0 +1,3 @@
+mutation Attack($targetId: ID!) {
+    attack(targetId: $targetId)
+}

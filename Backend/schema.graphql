@@ -1,15 +1,19 @@
 type Query {
-    counter: Int!
+    gameCharacter(id: ID!): GameCharacter!
 }
 
 type Mutation {
-    decrement: Int!
+    attack(targetId: ID!): Int!
 }
 
-type CounterEvent {
-    newValue: Int!
+type GameCharacter {
+    currentHealth: Int!
+}
+
+type HealthChangedEvent {
+    resultingHealth: Int!
 }
 
 type Subscription {
-    watchCounter: CounterEvent!
+    watchCharacter(id: ID!): HealthChangedEvent!
 }
